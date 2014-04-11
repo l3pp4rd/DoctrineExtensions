@@ -62,7 +62,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.3.x-dev"
+            "dev-master": "2.3.x-dev",
+            "dev-fix-association-mapping": "2.3.x-dev"
         }
     }
 }
