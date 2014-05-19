@@ -277,6 +277,7 @@ class SluggableListener extends MappedEventSubscriber
             // must fetch the old slug from changeset, since $object holds the new version
             $oldSlug = isset($changeSet[$slugField]) ? $changeSet[$slugField][0] : $slug;
             $needToChangeSlug = false;
+
             // if slug is null, regenerate it, or needs an update
             if (null === $slug || $slug === '__id__' || !isset($changeSet[$slugField])) {
                 $slug = '';
@@ -285,8 +286,13 @@ class SluggableListener extends MappedEventSubscriber
                         $needToChangeSlug = true;
                     }
                     $value = $meta->getReflectionProperty($sluggableField)->getValue($object);
-                    $slug .= ($value instanceof \DateTime) ? $value->format($options['dateFormat']) : $value;
-                    $slug .= ' ';
+                    if ($options['reverse']) {
+                        $slug = (($value instanceof \DateTime) ? $value->format($options['dateFormat']) : $value) . ' '. $slug;
+                    } else {
+                        $slug .= ($value instanceof \DateTime) ? $value->format($options['dateFormat']) : $value;
+                        $slug .= ' ';
+                    }
+
                 }
                 // trim generated slug as it will have unnecessary trailing space
                 $slug = trim($slug);
@@ -294,12 +300,14 @@ class SluggableListener extends MappedEventSubscriber
                 // slug was set manually
                 $needToChangeSlug = true;
             }
+
             // notify slug handlers --> onChangeDecision
             if ($hasHandlers) {
                 foreach ($options['handlers'] as $class => $handlerOptions) {
                     $this->getHandler($class)->onChangeDecision($ea, $options, $object, $slug, $needToChangeSlug);
                 }
             }
+
             // if slug is changed, do further processing
             if ($needToChangeSlug) {
                 $mapping = $meta->getFieldMapping($slugField);
@@ -318,7 +326,7 @@ class SluggableListener extends MappedEventSubscriber
                 // Step 1: transliteration, changing 北京 to 'Bei Jing'
                 $slug = call_user_func_array(
                     $this->transliterator,
-                    array($slug, $options['separator'], $object)
+                    array($slug, $options['separator'], $object, $options['reverse'])
                 );
 
                 // Step 2: urlization (replace spaces by '-' etc...)
@@ -377,9 +385,10 @@ class SluggableListener extends MappedEventSubscriber
                 // notify slug handlers --> onSlugCompletion
                 if ($hasHandlers) {
                     foreach ($options['handlers'] as $class => $handlerOptions) {
-                        $this->getHandler($class)->onSlugCompletion($ea, $options, $object, $slug);
+                        $this->getHandler($class)->onSlugCompletion($ea, $options, $object, $slug, $options['reverse']);
                     }
                 }
+
                 // set the final slug
                 $meta->getReflectionProperty($slugField)->setValue($object, $slug);
                 $uow->propertyChanged($object, $slugField, $oldSlug, $slug);

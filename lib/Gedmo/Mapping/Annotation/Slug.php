@@ -31,6 +31,8 @@ final class Slug extends Annotation
     public $prefix = '';
     /** @var string */
     public $suffix = '';
+    /** @var boolean */
+    public $reverse = false;
     /** @var array<Gedmo\Mapping\Annotation\SlugHandler> */
     public $handlers = array();
     /** @var string */

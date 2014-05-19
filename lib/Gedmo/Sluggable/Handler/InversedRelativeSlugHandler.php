@@ -73,7 +73,7 @@ class InversedRelativeSlugHandler implements SlugHandlerInterface
     /**
      * {@inheritDoc}
      */
-    public function onSlugCompletion(SluggableAdapter $ea, array &$config, $object, &$slug)
+    public function onSlugCompletion(SluggableAdapter $ea, array &$config, $object, &$slug, $reverse)
     {
         $this->om = $ea->getObjectManager();
         $isInsert = $this->om->getUnitOfWork()->isScheduledForInsert($object);
@@ -86,6 +86,7 @@ class InversedRelativeSlugHandler implements SlugHandlerInterface
                 $options['relationClass']
             );
             if ($mappedByConfig) {
+                //die(var_export($options));
                 $meta = $this->om->getClassMetadata($options['relationClass']);
                 if (!$meta->isSingleValuedAssociation($options['mappedBy'])) {
                     throw new InvalidMappingException("Unable to find ".$wrapped->getMetadata()->name." relation - [{$options['mappedBy']}] in class - {$meta->name}");

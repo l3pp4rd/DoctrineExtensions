@@ -121,6 +121,9 @@ class Annotation extends AbstractAnnotationDriver
                 if ($slug->unique_base && !$meta->hasField($slug->unique_base) && !$meta->hasAssociation($slug->unique_base)) {
                     throw new InvalidMappingException("Unable to find [{$slug->unique_base}] as mapped property in entity - {$meta->name}");
                 }
+                if (!is_bool($slug->reverse)) {
+                    throw new InvalidMappingException("Slug annotation [reverse], type is not valid and must be 'boolean' in class - {$meta->name}");
+                }
                 // set all options
                 $config['slugs'][$field] = array(
                     'fields' => $slug->fields,
@@ -134,6 +137,7 @@ class Annotation extends AbstractAnnotationDriver
                     'prefix' => $slug->prefix,
                     'suffix' => $slug->suffix,
                     'handlers' => $handlers,
+                    'reverse' => $slug->reverse,
                 );
             }
         }

@@ -33,6 +33,18 @@ class RelativeSlug
     private $alias;
 
     /**
+     * @Gedmo\Slug(handlers={
+     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\RelativeSlugHandler", options={
+     *          @Gedmo\SlugHandlerOption(name="relationField", value="article"),
+     *          @Gedmo\SlugHandlerOption(name="relationSlugField", value="slug"),
+     *          @Gedmo\SlugHandlerOption(name="separator", value="/")
+     *      })
+     * }, separator="-", updatable=true, reverse=true, fields={"title"})
+     * @ODM\String
+     */
+    private $reverseSlug;
+
+    /**
      * @ODM\ReferenceOne(targetDocument="Article")
      */
     private $article;
@@ -65,5 +77,10 @@ class RelativeSlug
     public function getSlug()
     {
         return $this->alias;
+    }
+
+    public function getReverseSlug()
+    {
+        return $this->reverseSlug;
     }
 }

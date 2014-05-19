@@ -102,6 +102,9 @@ class Yaml extends File implements Driver
                         $config['slugs'][$field]['suffix'] = isset($slug['suffix']) ?
                             (string)$slug['suffix'] : '';
 
+                        $config['slugs'][$field]['reverse'] = isset($slug['reverse']) ?
+                            (bool)$slug['reverse'] : false;
+
                         if (!$meta->isMappedSuperclass && $meta->isIdentifier($field) && !$config['slugs'][$field]['unique']) {
                             throw new InvalidMappingException("Identifier field - [{$field}] slug must be unique in order to maintain primary key in class - {$meta->name}");
                         }

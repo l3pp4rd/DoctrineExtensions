@@ -56,9 +56,10 @@ interface SlugHandlerInterface
      * @param array $config
      * @param object $object
      * @param string $slug
+     * @param boolean $reverse
      * @return void
      */
-    public function onSlugCompletion(SluggableAdapter $ea, array &$config, $object, &$slug);
+    public function onSlugCompletion(SluggableAdapter $ea, array &$config, $object, &$slug, $reverse);
 
     /**
      * @return boolean whether or not this handler has already urlized the slug
