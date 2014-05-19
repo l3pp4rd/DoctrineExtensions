@@ -128,9 +128,9 @@ class TreeSlugHandler implements SlugHandlerInterface
     /**
      * {@inheritDoc}
      */
-    public function onSlugCompletion(SluggableAdapter $ea, array &$config, $object, &$slug)
+    public function onSlugCompletion(SluggableAdapter $ea, array &$config, $object, &$slug, $reverse)
     {
-        $slug = $this->transliterate($slug, $config['separator'], $object);
+        $slug = $this->transliterate($slug, $config['separator'], $object, $reverse);
 
         if (!$this->isInsert) {
             $wrapped = AbstractWrapper::wrap($object, $this->om);
@@ -165,17 +165,22 @@ class TreeSlugHandler implements SlugHandlerInterface
      * Transliterates the slug and prefixes the slug
      * by collection of parent slugs
      *
-     * @param string $text
-     * @param string $separator
-     * @param object $object
+     * @param string  $text
+     * @param string  $separator
+     * @param object  $object
+     * @param boolean $reverse
      * @return string
      */
-    public function transliterate($text, $separator, $object)
+    public function transliterate($text, $separator, $object, $reverse)
     {
         $slug = $text;
 
         if (strlen($this->parentSlug)) {
-            $slug = $this->parentSlug . $this->usedPathSeparator . $slug . $this->suffix;
+            if ($reverse) {
+                $slug = $slug . $this->usedPathSeparator . $this->parentSlug . $this->suffix;
+            } else {
+                $slug = $this->parentSlug . $this->usedPathSeparator . $slug . $this->suffix;
+            }
         }
         else {
             // if no parentSlug, apply our prefix

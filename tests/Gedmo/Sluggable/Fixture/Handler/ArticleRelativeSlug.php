@@ -35,6 +35,18 @@ class ArticleRelativeSlug
     private $slug;
 
     /**
+     * @Gedmo\Slug(handlers={
+     *      @Gedmo\SlugHandler(class="Gedmo\Sluggable\Handler\RelativeSlugHandler", options={
+     *          @Gedmo\SlugHandlerOption(name="relationField", value="article"),
+     *          @Gedmo\SlugHandlerOption(name="relationSlugField", value="slug"),
+     *          @Gedmo\SlugHandlerOption(name="separator", value="/")
+     *      })
+     * }, separator="-", updatable=true, reverse=true, fields={"title"})
+     * @ORM\Column(name="reverse_slug", type="string", length=64, unique=true)
+     */
+    private $reverseSlug;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Article")
      */
     private $article;
@@ -67,5 +79,10 @@ class ArticleRelativeSlug
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    public function getReverseSlug()
+    {
+        return $this->reverseSlug;
     }
 }

@@ -35,15 +35,19 @@ class RelativeSlugHandlerDocumentTest extends BaseTestCaseMongoODM
 
         $thomas = $repo->findOneByTitle('Thomas');
         $this->assertEquals('sport-test/thomas', $thomas->getSlug());
+        $this->assertEquals('thomas/sport-test', $thomas->getReverseSlug());
 
         $jen = $repo->findOneByTitle('Jen');
         $this->assertEquals('sport-test/jen', $jen->getSlug());
+        $this->assertEquals('jen/sport-test', $jen->getReverseSlug());
 
         $john = $repo->findOneByTitle('John');
         $this->assertEquals('cars-code/john', $john->getSlug());
+        $this->assertEquals('john/cars-code', $john->getReverseSlug());
 
         $single = $repo->findOneByTitle('Single');
         $this->assertEquals('single', $single->getSlug());
+        $this->assertEquals('single', $single->getReverseSlug());
     }
 
     public function testUpdateOperations()

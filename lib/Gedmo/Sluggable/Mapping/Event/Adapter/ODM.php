@@ -97,9 +97,13 @@ final class ODM extends BaseAdapterODM implements SluggableAdapter
         $dm = $this->getObjectManager();
         $wrapped = AbstractWrapper::wrap($object, $dm);
         $meta = $dm->getClassMetadata($config['useObjectClass']);
+
+        $association = $meta->associationMappings[$config['mappedBy']];
+        $field = $association['simple'] ? $config['mappedBy'] : $config['mappedBy'].'.'.$meta->identifier;
+
         $q = $dm
             ->createQueryBuilder($config['useObjectClass'])
-            ->field($config['mappedBy'].'.'.$meta->identifier)->equals($wrapped->getIdentifier())
+            ->field($field)->equals($wrapped->getIdentifier())
             ->getQuery()
         ;
         $q->setHydrate(false);
@@ -107,7 +111,7 @@ final class ODM extends BaseAdapterODM implements SluggableAdapter
         if ($result instanceof Cursor) {
             $result = $result->toArray();
             foreach ($result as $targetObject) {
-                $slug = preg_replace("@^{$replacement}@smi", $target, $targetObject[$config['slug']]);
+                $slug = preg_replace("@{$replacement}@smi", $target, $targetObject[$config['slug']]);
                 $dm
                     ->createQueryBuilder()
                     ->update($config['useObjectClass'])
