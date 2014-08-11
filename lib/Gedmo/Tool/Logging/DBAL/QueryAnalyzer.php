@@ -96,7 +96,7 @@ class QueryAnalyzer implements SQLLogger
      * Dump the statistics of executed queries
      *
      * @param boolean $dumpOnlySql
-     * @return void
+     * @return string
      */
     public function getOutput($dumpOnlySql = false)
     {
