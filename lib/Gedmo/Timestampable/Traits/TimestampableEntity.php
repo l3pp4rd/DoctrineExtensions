@@ -2,6 +2,8 @@
 
 namespace Gedmo\Timestampable\Traits;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
  * Timestampable Trait, usable with PHP >= 5.4
  *
@@ -12,13 +14,13 @@ trait TimestampableEntity
 {
     /**
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      */
     protected $createdAt;
 
     /**
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="updated_at", type="datetime")
      */
     protected $updatedAt;
 
