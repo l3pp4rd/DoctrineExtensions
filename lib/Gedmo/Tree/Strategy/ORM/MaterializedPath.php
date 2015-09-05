@@ -28,7 +28,8 @@ class MaterializedPath extends AbstractMaterializedPath
         $qb = $om->createQueryBuilder();
         $qb->select('e')
             ->from($config['useObjectClass'], 'e')
-            ->where($qb->expr()->like('e.'.$config['path'], $qb->expr()->literal($path.'%')));
+            ->where($qb->expr()->like('e.'.$config['path'], $qb->expr()->literal($path.'%')))
+            ->andWhere($qb->expr()->neq('e.'.$config['path'], $qb->expr()->literal($path)));
         $results = $qb->getQuery()
             ->execute();
 
