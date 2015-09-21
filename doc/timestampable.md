@@ -195,7 +195,7 @@ class Article
     private $body;
 
     /**
-     * @var date $created
+     * @var \DateTime $created
      *
      * @ODM\Date
      * @Gedmo\Timestampable(on="create")
@@ -203,7 +203,7 @@ class Article
     private $created;
 
     /**
-     * @var date $updated
+     * @var \DateTime $updated
      *
      * @ODM\Date
      * @Gedmo\Timestampable
