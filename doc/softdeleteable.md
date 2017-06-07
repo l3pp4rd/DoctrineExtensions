@@ -93,7 +93,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @gedmo\Mapping\Annotation\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Article
 {
@@ -254,7 +254,7 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 
 /**
  * @ORM\Entity
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @gedmo\Mapping\Annotation\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class UsingTrait
 {
